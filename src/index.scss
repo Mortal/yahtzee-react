@@ -1,3 +1,20 @@
-.MyTestStyle {
-				color: red;
+.ScoreTable {
+	display: flex;
+	flex-direction: row;
+	.ScoreHeader, .ScoreColumn {
+		display: flex;
+		flex-direction: column;
+		div {
+			height: 2em;
+		}
+		input {
+			width: 100%;
+		}
+	}
+	.ScoreHeader {
+		width: 15em;
+	}
+	.ScoreColumn {
+		width: 3em;
+	}
 }
