@@ -43,7 +43,7 @@ export class Hint extends React.Component<Props, State> {
       if (v === null) return null;
       rollString += v;
     }
-    const base = "http://127.0.0.1:8000/";
+    const base = "/hint/";
     const playerState: { [key: string]: number } = {};
     let gameOver = true;
     const sides = this.props.player.sides;
