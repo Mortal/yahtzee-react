@@ -1,3 +1,7 @@
+body {
+	font-family: "Lucida Sans";
+}
+
 .ScoreTable {
 	display: flex;
 	flex-direction: row;
@@ -6,9 +10,20 @@
 		flex-direction: column;
 		div {
 			height: 2em;
+			line-height: 2em;
+			&:nth-child(odd) {
+				background-color: #eee;
+			}
 		}
 		input {
 			width: 100%;
+			border: 0 none;
+			border-bottom: 1px solid #999;
+			padding: 0;
+			text-align: center;
+			font-family: inherit;
+			font-size: inherit;
+			background: transparent;
 		}
 	}
 	.ScoreHeader {
