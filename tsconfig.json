@@ -1,8 +1,11 @@
 {
 	"compilerOptions": {
+		"strict": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"removeComments": true,
 		"allowJs": false,
-		"noImplicitAny": false,
 		"module": "es6",
 		"sourceMap": true,
 		"jsx": "react",

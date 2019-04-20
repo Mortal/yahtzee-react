@@ -1,5 +1,5 @@
 body {
-	font-family: "Lucida Sans";
+	font-family: "Liberation Sans", Arial, sans-serif;
 }
 
 .ScoreTable {
@@ -9,8 +9,8 @@ body {
 		display: flex;
 		flex-direction: column;
 		div {
-			height: 2em;
-			line-height: 2em;
+			height: 1.7em;
+			line-height: 1.7em;
 			&:nth-child(odd) {
 				background-color: #eee;
 			}

@@ -1,15 +1,26 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {observable, computed, action} from "mobx";
+import {observable, action, autorun} from "mobx";
 import {observer} from "mobx-react";
 import styles from "./index.scss";
+import { DirtyInput } from "./components/dirtyinput";
+
+interface IState {
+	players?: number[][];
+}
 
 class App {
 	@observable
-	players = [];
+	state: IState = {};
+
+	get players() {
+		if (this.state.players === undefined)
+			this.state.players = [];
+		return this.state.players;
+	}
 
 	@action
-	onPlayerCountChange(i) {
+	onPlayerCountChange(i: number) {
 		while (this.players.length > i) this.players.pop();
 		while (this.players.length < i) {
 			const r = [];
@@ -21,11 +32,14 @@ class App {
 
 const app = new App();
 
+const getStateElement = () => document.getElementById("state") as HTMLInputElement;
+app.state = JSON.parse(getStateElement().value || "{}") || {};
+autorun(() => getStateElement().value = JSON.stringify(app.state));
+
 @observer
 class AppComponent extends React.Component<{}, {}> {
 	render() {
-		const header = <>
-			<div className={styles.ScoreHeader}>
+		const header = <div className={styles.ScoreHeader}>
 			<div>Enere</div>
 			<div>Toere</div>
 			<div>Treere</div>
@@ -46,17 +60,31 @@ class AppComponent extends React.Component<{}, {}> {
 			<div>Fuldt hus 3 + 2 ens</div>
 			<div>Chance</div>
 			<div>Super-yatzy</div>
-			</div>
-		</>;
+		</div>;
+
+		const onChange = (i: number, j: number, s: string) => {
+			let v = parseInt(s);
+			if (v === v) app.players[i][j] = v;
+		};
 
 		const players = app.players.map((v, i) =>
 			<div key={i} className={styles.ScoreColumn}>
-			{v.map((c, j) => <div><input value={c} onChange={e => v[j] = e.target.value} /></div>)}
+			{v.map((c, j) =>
+				<div>
+					<DirtyInput value={c.toString()} onChange={s => onChange(i, j, s)} />
+				</div>
+			)}
 			</div>
 		);
 
 		return <>
-			<div>Players: <input value={app.players.length} onChange={e => app.onPlayerCountChange(parseInt(e.target.value))} /></div>
+			<div>
+				{"Players: "}
+				<DirtyInput
+					value={app.players.length.toString()}
+					onChange={v => app.onPlayerCountChange(parseInt(v))}
+					/>
+			</div>
 			<div className={styles.ScoreTable}>
 			{header}
 			{players}
