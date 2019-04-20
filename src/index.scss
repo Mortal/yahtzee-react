@@ -4,11 +4,11 @@ body {
 
 .ScoreTable {
   display: flex;
-  flex-direction: row;
+  flex-flow: row;
   & > .ScoreHeader,
   & > .ScoreColumn {
     display: flex;
-    flex-direction: column;
+    flex-flow: column;
     & > div {
       height: 1.7em;
       line-height: 1.7em;
@@ -44,7 +44,7 @@ body {
 
 .Menu {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   margin-bottom: 0.5em;
 
   & > div {
@@ -52,4 +52,12 @@ body {
     margin: 0 1em 0 0;
     padding: 0 0.5em;
   }
+
+  .PlayerCount {
+    width: 3em;
+  }
+}
+
+.Hint {
+  height: 2em;
 }

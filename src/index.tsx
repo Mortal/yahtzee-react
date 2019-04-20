@@ -17,7 +17,7 @@ class App {
   get players() {
     if (this.state.players === undefined) {
       this.state.players = [];
-      this.setPlayerCount(2);
+      this.setPlayerCount(1);
     }
     return this.state.players.slice(0, this.state.playerCount || 0);
   }
@@ -218,6 +218,7 @@ class AppComponent extends React.Component<{}, {}> {
         <div>
           {"Spillere: "}
           <DirtyInput
+            className={styles.PlayerCount}
             type="number"
             value={app.players.length}
             onChange={(v: number | null) => {
@@ -260,6 +261,7 @@ class AppComponent extends React.Component<{}, {}> {
 
     const hints = app.state.hints ? (
       <Hint
+        className={styles.Hint}
         currentRoll={app.state.currentRoll || []}
         currentRollCount={app.state.currentRollCount || 0}
         player={(app.state.players || [])[app.turn]}

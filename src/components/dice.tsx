@@ -17,6 +17,16 @@ interface State {
 export class Dice extends React.Component<Props, State> {
   state = { held: [] };
 
+  componentDidUpdate() {
+    if (
+      this.state.held.some(
+        ({ index, face }) => this.props.value[index] !== face
+      )
+    ) {
+      this.setHeldMask(this.getHeldMask());
+    }
+  }
+
   getHeldMask() {
     const held = [];
     for (let i = 0; i < this.props.value.length; ++i) {

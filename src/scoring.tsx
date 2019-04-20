@@ -15,6 +15,29 @@ export const COMB_COUNT = 12;
 export const DICE_COUNT = 6;
 export const SIDES = 6;
 
+export const COMBINATIONS = "PDTVQWsSCH?!";
+
+export const COMBINATION_NAME: { [key: string]: string } = {
+  "1": "Enere",
+  "2": "Toere",
+  "3": "Treere",
+  "4": "Firere",
+  "5": "Femmere",
+  "6": "Seksere",
+  P: "1 par",
+  D: "2 par",
+  T: "3 par",
+  V: "3 ens",
+  Q: "4 ens",
+  W: "2 x 3 ens",
+  s: "Lav 1-2-3-4-5",
+  S: "Høj 2-3-4-5-6",
+  C: "Cameron 1-2-3-4-5-6",
+  H: "Fuldt hus 3 + 2 ens",
+  "?": "Chance",
+  "!": "Super-yatzy"
+};
+
 export interface Scoring {
   sides: number[];
   combinations: number[];
