@@ -16,8 +16,7 @@ class App {
 
   get players() {
     if (this.state.players === undefined) {
-      this.state.players = [];
-      this.setPlayerCount(1);
+      return [];
     }
     return this.state.players.slice(0, this.state.playerCount || 0);
   }
@@ -36,7 +35,7 @@ class App {
 
   get turn() {
     if (this.state.turn === undefined || this.state.turn >= this.players.length)
-      this.state.turn = 0;
+      return 0;
     return this.state.turn;
   }
 
@@ -51,7 +50,7 @@ class App {
 
   @action
   setPlayerCount(i: number) {
-    const players = (this.state.players = this.state.players || []);
+    const players = this.state.players || [];
     this.state.playerCount = i;
     while (players.length < i) {
       const sides = [];
@@ -60,6 +59,8 @@ class App {
       for (let j = 0; j < 12; ++j) combinations.push(null);
       players.push({ name: "", sides, combinations });
     }
+    this.state.players = players;
+    this.state.turn = this.turn;
   }
 
   @action
@@ -83,6 +84,12 @@ autorun(() => (getStateElement().value = JSON.stringify(app.state)));
 
 @observer
 class AppComponent extends React.Component<{}, {}> {
+  componentDidMount() {
+    if (app.players.length === 0) {
+      app.setPlayerCount(1);
+    }
+  }
+
   render() {
     const header = (
       <div className={styles.ScoreHeader}>
