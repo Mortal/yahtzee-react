@@ -4,6 +4,7 @@ import { observable, action, autorun } from "mobx";
 import { observer } from "mobx-react";
 import styles from "./index.scss";
 import { DirtyInput } from "./components/dirtyinput";
+import { Dice } from "./components/dice";
 
 interface PlayerState {
   name: string;
@@ -12,6 +13,7 @@ interface PlayerState {
 
 interface AppState {
   players?: PlayerState[];
+  dice?: (number | null)[];
 }
 
 class App {
@@ -21,6 +23,11 @@ class App {
   get players() {
     if (this.state.players === undefined) this.state.players = [];
     return this.state.players;
+  }
+
+  get dice() {
+    if (this.state.dice === undefined) this.state.dice = [null, null, null, null, null, null];
+    return this.state.dice;
   }
 
   @action
@@ -77,7 +84,7 @@ class AppComponent extends React.Component<{}, {}> {
     const players = app.players.map((player, i) => (
       <div key={i} className={styles.ScoreColumn}>
         {player.score.map((c, j) => (
-          <div>
+          <div key={j}>
             <DirtyInput
               value={c === null ? "" : c.toString()}
               onChange={s => onChange(i, j, s)}
@@ -99,6 +106,9 @@ class AppComponent extends React.Component<{}, {}> {
         <div className={styles.ScoreTable}>
           {header}
           {players}
+        </div>
+        <div>
+          <Dice value={app.dice} onChange={v => app.state.dice = v} allowReroll={true} />
         </div>
       </>
     );
