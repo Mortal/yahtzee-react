@@ -5,13 +5,18 @@ import { observer } from "mobx-react";
 import styles from "./index.scss";
 import { DirtyInput } from "./components/dirtyinput";
 
-interface IState {
-  players?: number[][];
+interface PlayerState {
+  name: string;
+  score: (number | null)[];
+}
+
+interface AppState {
+  players?: PlayerState[];
 }
 
 class App {
   @observable
-  state: IState = {};
+  state: AppState = {};
 
   get players() {
     if (this.state.players === undefined) this.state.players = [];
@@ -23,8 +28,8 @@ class App {
     while (this.players.length > i) this.players.pop();
     while (this.players.length < i) {
       const r = [];
-      for (let j = 0; j < 20; ++j) r.push(0);
-      this.players.push(r);
+      for (let j = 0; j < 20; ++j) r.push(null);
+      this.players.push({name: "", score: r});
     }
   }
 }
@@ -65,16 +70,16 @@ class AppComponent extends React.Component<{}, {}> {
     );
 
     const onChange = (i: number, j: number, s: string) => {
-      let v = parseInt(s);
-      if (v === v) app.players[i][j] = v;
+      let v = s ? parseInt(s) : null;
+      if (v === v) app.players[i].score[j] = v;
     };
 
-    const players = app.players.map((v, i) => (
+    const players = app.players.map((player, i) => (
       <div key={i} className={styles.ScoreColumn}>
-        {v.map((c, j) => (
+        {player.score.map((c, j) => (
           <div>
             <DirtyInput
-              value={c.toString()}
+              value={c === null ? "" : c.toString()}
               onChange={s => onChange(i, j, s)}
             />
           </div>
