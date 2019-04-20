@@ -44,21 +44,27 @@ export class Hint extends React.Component<Props, State> {
       rollString += v;
     }
     const base = "http://127.0.0.1:8000/";
-    const playerState: { [key: string]: 1 } = {};
+    const playerState: { [key: string]: number } = {};
+    let gameOver = true;
     const sides = this.props.player.sides;
     if (sides) {
       const sidesKeys = "123456";
       for (let i = 0; i < sidesKeys.length; ++i) {
-        if (sides[i]) playerState[sidesKeys.charAt(i)] = 1;
+        const v = sides[i];
+        if (v !== null) playerState[sidesKeys.charAt(i)] = v;
+        else gameOver = false;
       }
     }
     const combinations = this.props.player.combinations;
     if (combinations) {
       const combinationsKeys = COMBINATIONS;
       for (let i = 0; i < combinationsKeys.length; ++i) {
-        if (combinations[i]) playerState[combinationsKeys.charAt(i)] = 1;
+        const v = combinations[i];
+        if (v !== null) playerState[combinationsKeys.charAt(i)] = v;
+        else gameOver = false;
       }
     }
+    if (gameOver) return null;
     const state = encodeURIComponent(JSON.stringify(playerState));
     return (
       base +
