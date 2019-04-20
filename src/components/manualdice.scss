@@ -1,0 +1,15 @@
+.ManualDice {
+  width: 300px;
+  font-size: 36px;
+  height: 40px;
+  border: 0 none;
+  background: white;
+  letter-spacing: 0.25em;
+  padding-left: 0.1em;
+
+  &.Placeholder {
+    letter-spacing: 0;
+    font-style: italic;
+    font-size: 20px;
+  }
+}

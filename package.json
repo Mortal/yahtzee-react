@@ -2,7 +2,7 @@
 	"name": "Yahtzee",
 	"scripts": {
 		"prettier": "prettier --write 'src/**/*.tsx' 'src/**/*.scss' 'src/**/*.html'",
-		"serve": "webpack-dev-server.js --mode development --open --hot"
+		"serve": "webpack-dev-server --mode development --open --hot"
 	},
 	"version": "0.0.0",
 	"private": false,

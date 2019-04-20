@@ -1,2 +1,24 @@
 .Dice {
+  display: flex;
+  flex-direction: row;
+
+  & > .Roll {
+    width: 100px;
+    height: 40px;
+  }
+
+  & > .Die {
+    width: 40px;
+    height: 40px;
+    border: 0px none;
+    background: white;
+    font-size: 36px;
+    line-height: 100%;
+    text-align: center;
+    padding: 0;
+
+    &.Held {
+      color: red;
+    }
+  }
 }
