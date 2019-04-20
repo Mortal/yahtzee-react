@@ -172,6 +172,16 @@ class AppComponent extends React.Component<{}, {}> {
 
     const playerSideSum = (player: PlayerState) => playerGroupSum(player.sides);
 
+    const displaySideSum = (player: PlayerState) => {
+      let v = 0;
+      for (let j = 0; j < player.sides.length; ++j) {
+        const c = player.sides[j];
+        if (c === null) continue;
+        v += c - 4 * (j + 1);
+      }
+      return !v ? "—" : v > 0 ? "+" + v : v.toString().replace("-", "−");
+    };
+
     const playerSideBonus = (player: PlayerState) =>
       playerSideSum(player) >= 84 ? 50 : 0;
 
@@ -200,7 +210,7 @@ class AppComponent extends React.Component<{}, {}> {
           )}
         </div>
         {displayGroup(player, app.turn === i, "sides")}
-        <div>{playerSideSum(player)}</div>
+        <div>{displaySideSum(player)}</div>
         <div>{playerSideBonus(player)}</div>
         {displayGroup(player, app.turn === i, "combinations")}
         <div>{playerSum(player)}</div>
