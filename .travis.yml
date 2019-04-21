@@ -1,0 +1,22 @@
+notifications:
+  email: false
+matrix:
+  include:
+  - sudo: required
+    services:
+    - docker
+    env: DOCKER_IMAGE=node
+install:
+- docker pull $DOCKER_IMAGE
+script:
+- docker run --rm -v `pwd`:/work $DOCKER_IMAGE $PRE_CMD /bin/bash -c 'cd /work && npm i && node_modules/.bin/webpack && cd dist && tar czvf ../yahtzee-react.tar.gz .'
+- ls -l yahtzee-react.tar.gz
+deploy:
+  provider: releases
+  api_key:
+    secure: J7NubYVdAS3ihXuiNktEm5UHN25YbV68x343MYv042AWWEVvwRwRGxoqtjWKkWE0Nu6lXBeSYdg69e7sjj0VYaiPqdqgNo6SnUSo0kNRqKkT23o6lY4oFzX8gchNLEFj2t1YJuX51HNsRu7cd52srJDS7V1W0g6MsOjILP7CgCWOKuxdpflHbImft0VJfc+RdmCjEdxgdH53tFhU/N/UooTHWMWhYsEp8CwsylhRbuDOpwWY6/MLqgBe0TgC6WfW+81tir39/I0QS53JhQgtJwSWlcBf2aGD7qYiUhtdopiRjPEq4oNVhBMmwYevod6MnYBVdEz5Xj394wRePOGAM4Bxl0yxvHhqOyWZEkBxyZv2z+L1VHmb+OOPG1TvcAwZljoLKKtsRKuZ6J5zyaykp5m1kYbAs5qBzbGMlySwrLXrDvLKxuA+VhnYdL1awKKI2+roBhJ2ALt3o5ab9OA1r59+bL/JUlQbkKOaKx5L/QArLAsX4GjIIvMCqUbRd4fosQ6HMGQo7H53ttXldeN3Ze/T7nHpeW9xD6yugJsirizdfzVdGzYRbol25XQFYsp/D8ly81AAz69jZwyj5hoy+5HjV/daogQD492uYv9rBeB9CgcegHb/fA5vBwABv2pIW7Rh08nfhX2s0DZZ0nDtnECoQIW1nQDtPdlmWFAe+G8=
+  skip_cleanup: true
+  file: yahtzee-react.tar.gz
+  on:
+    repo: Mortal/yahtzee-react
+    tags: true
