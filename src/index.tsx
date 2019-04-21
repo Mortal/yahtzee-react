@@ -157,7 +157,7 @@ class AppComponent extends React.Component<{}, {}> {
       player[group].map((c, j) => {
         if (app.state.editing)
           return (
-            <div className={rowStyles[group][j]} key={group + j}>
+            <div className={rowStyles[group][j] + " " + styles.Editing} key={group + j}>
               <DirtyInput
                 type="number"
                 value={c}
