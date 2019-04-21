@@ -197,25 +197,30 @@ class AppComponent extends React.Component<{}, {}> {
       return s;
     };
 
-    const playerSideSum = (player: PlayerState) => playerGroupSum(player.sides);
-
-    const displaySideSum = (player: PlayerState) => {
+    const playerSideSum = (player: PlayerState) => {
       let v = 0;
       for (let j = 0; j < player.sides.length; ++j) {
         const c = player.sides[j];
         if (c === null) continue;
         v += c - 4 * (j + 1);
       }
+      return v;
+    };
+
+    const displaySideSum = (player: PlayerState) => {
+      const v = playerSideSum(player);
       return !v ? "—" : v > 0 ? "+" + v : v.toString().replace("-", "−");
     };
 
     const playerSideBonus = (player: PlayerState) =>
-      playerSideSum(player) >= 84 ? 50 : 0;
+      playerGroupSum(player.sides) >= 84 ? 50 : 0;
 
-    const playerSum = (player: PlayerState) =>
-      playerSideSum(player) +
-      playerSideBonus(player) +
-      playerGroupSum(player.combinations);
+    const displayTotal = (player: PlayerState) => {
+      const v = playerSideSum(player) +
+        playerSideBonus(player) +
+        playerGroupSum(player.combinations);
+      return v.toString().replace("-", "−");
+    };
 
     const players = app.players.map((player, i) => (
       <div key={i} className={styles.ScoreColumn}>
@@ -240,7 +245,7 @@ class AppComponent extends React.Component<{}, {}> {
         <div className={styles.rowsum}>{displaySideSum(player)}</div>
         <div className={styles.rowbonus}>{playerSideBonus(player)}</div>
         {displayGroup(player, app.turn === i, "combinations")}
-        <div className={styles.rowtotal}>{playerSum(player)}</div>
+        <div className={styles.rowtotal}>{displayTotal(player)}</div>
       </div>
     ));
 
