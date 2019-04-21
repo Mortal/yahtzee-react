@@ -12,10 +12,12 @@ interface Props {
 
 interface State {
   held: { index: number; face: number }[];
+  rerollAnimation: number[] | null;
 }
 
 export class Dice extends React.Component<Props, State> {
-  state = { held: [] };
+  state = { held: [], rerollAnimation: null };
+  rerollAnimation = 0;
 
   componentDidUpdate() {
     if (
@@ -61,24 +63,38 @@ export class Dice extends React.Component<Props, State> {
   }
 
   reroll() {
+    if (this.rerollAnimation > 0) return;
+    this.rerollAnimation = 4;
+    this.rerollStep();
+  }
+
+  rerollStep() {
+    this.rerollAnimation -= 1;
     const roll = [];
     const held = this.getHeldMask();
     for (let i = 0; i < this.props.value.length; ++i) {
       if (!held[i]) roll.push(Math.floor(Math.random() * DICE.length) + 1);
     }
-    console.log(roll);
-    roll.sort();
+    if (this.rerollAnimation == 0) {
+      roll.sort();
+    }
     const faces = [];
     for (let i = 0; i < this.props.value.length; ++i) {
-      if (held[i]) faces.push(this.props.value[i]);
+      if (held[i]) faces.push(this.props.value[i] as number);
       else faces.push(roll.shift() as number);
     }
-    this.props.onChange(faces);
+    if (this.rerollAnimation > 0) {
+      this.setState({rerollAnimation: faces});
+      setTimeout(() => this.rerollStep(), 100);
+    } else {
+      this.setState({rerollAnimation: null});
+      this.props.onChange(faces);
+    }
   }
 
   render() {
     const held = this.getHeldMask();
-    const dice = this.props.value.map((v, i) => (
+    const dice = (this.state.rerollAnimation || this.props.value).map((v, i) => (
       <button
         key={i}
         className={classNames({
