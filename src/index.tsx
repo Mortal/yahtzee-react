@@ -232,7 +232,7 @@ class AppComponent extends React.Component<{}, {}> {
                 checked={app.turn === i}
                 onChange={() => (app.state.turn = i)}
               />
-              <span>{player.name}</span>
+              <span>{player.name || (i < 26 ? String.fromCharCode(65 + i) : "")}</span>
             </label>
           )}
         </div>
