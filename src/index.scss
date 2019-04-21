@@ -3,6 +3,7 @@ body {
 }
 
 .ScoreTable {
+  font-size: 12px;
   display: flex;
   flex-flow: row;
   & > .ScoreHeader,
@@ -10,11 +11,26 @@ body {
     display: flex;
     flex-flow: column;
     & > div {
-      height: 1.7em;
-      line-height: 1.7em;
-      &:nth-child(odd) {
-        background-color: #eee;
+      height: 2.6em;
+      line-height: 2.6em;
+      border: 1px solid black;
+      margin: -1px -1px 0 0;
+      padding: 0 .5em;
+      &:first-child {
+        border-top-width: 3px;
       }
+      &:last-child {
+        border-bottom-width: 3px;
+      }
+    }
+    & > .row6, & > .rowbonus, & > .rowtotal {
+      border-bottom-width: 3px;
+    }
+    &:first-child > div {
+      border-left-width: 3px;
+    }
+    &:last-child > div {
+      border-right-width: 3px;
     }
   }
   & > .ScoreHeader {

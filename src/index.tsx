@@ -6,9 +6,10 @@ import styles from "./index.scss";
 import { DirtyInput } from "./components/dirtyinput";
 import { Dice } from "./components/dice";
 import { ManualDice } from "./components/manualdice";
-import { compute_scoring } from "./scoring";
+import { compute_scoring, COMBINATION_NAME } from "./scoring";
 import { Hint } from "./components/hint";
 import { PlayerState, AppState } from "./state";
+import { classNames } from "./util";
 
 class App {
   @observable
@@ -93,30 +94,55 @@ class AppComponent extends React.Component<{}, {}> {
   render() {
     const header = (
       <div className={styles.ScoreHeader}>
-        <div>Navn</div>
-        <div>Enere</div>
-        <div>Toere</div>
-        <div>Treere</div>
-        <div>Firere</div>
-        <div>Femmere</div>
-        <div>Seksere</div>
-        <div>Sum</div>
-        <div>Bonus ved 84 eller flere</div>
-        <div>1 par</div>
-        <div>2 par</div>
-        <div>3 par</div>
-        <div>3 ens</div>
-        <div>4 ens</div>
-        <div>2 x 3 ens</div>
-        <div>Lav 1-2-3-4-5</div>
-        <div>Høj 2-3-4-5-6</div>
-        <div>Cameron 1-2-3-4-5-6</div>
-        <div>Fuldt hus 3 + 2 ens</div>
-        <div>Chance</div>
-        <div>Super-yatzy</div>
-        <div>Sum</div>
+        <div className={styles.rowname}>Navn</div>
+        <div className={styles.row1}>{COMBINATION_NAME["1"]}</div>
+        <div className={styles.row2}>{COMBINATION_NAME["2"]}</div>
+        <div className={styles.row3}>{COMBINATION_NAME["3"]}</div>
+        <div className={styles.row4}>{COMBINATION_NAME["4"]}</div>
+        <div className={styles.row5}>{COMBINATION_NAME["5"]}</div>
+        <div className={styles.row6}>{COMBINATION_NAME["6"]}</div>
+        <div className={styles.rowsum}>Sum</div>
+        <div className={styles.rowbonus}>Bonus ved 84 eller flere</div>
+        <div className={styles.rowP}>{COMBINATION_NAME.P}</div>
+        <div className={styles.rowD}>{COMBINATION_NAME.D}</div>
+        <div className={styles.rowT}>{COMBINATION_NAME.T}</div>
+        <div className={styles.rowV}>{COMBINATION_NAME.V}</div>
+        <div className={styles.rowQ}>{COMBINATION_NAME.Q}</div>
+        <div className={styles.rowW}>{COMBINATION_NAME.W}</div>
+        <div className={styles.rows}>{COMBINATION_NAME.s}</div>
+        <div className={styles.rowS}>{COMBINATION_NAME.S}</div>
+        <div className={styles.rowC}>{COMBINATION_NAME.C}</div>
+        <div className={styles.rowH}>{COMBINATION_NAME.H}</div>
+        <div className={styles.rowchance}>{COMBINATION_NAME["?"]}</div>
+        <div className={styles.rowyahtzee}>{COMBINATION_NAME["!"]}</div>
+        <div className={styles.rowtotal}>Sum</div>
       </div>
     );
+
+    const rowStyles = {
+      sides: [
+        styles.row1,
+        styles.row2,
+        styles.row3,
+        styles.row4,
+        styles.row5,
+        styles.row6,
+      ],
+      combinations: [
+        styles.rowP,
+        styles.rowD,
+        styles.rowT,
+        styles.rowV,
+        styles.rowQ,
+        styles.rowW,
+        styles.rows,
+        styles.rowS,
+        styles.rowC,
+        styles.rowH,
+        styles.rowchance,
+        styles.rowyahtzee,
+      ],
+    };
 
     const roll = [];
     for (const v of app.state.currentRoll || []) if (v !== null) roll.push(v);
@@ -130,7 +156,7 @@ class AppComponent extends React.Component<{}, {}> {
       player[group].map((c, j) => {
         if (app.state.editing)
           return (
-            <div key={group + j}>
+            <div className={rowStyles[group][j]} key={group + j}>
               <DirtyInput
                 type="number"
                 value={c}
@@ -151,7 +177,7 @@ class AppComponent extends React.Component<{}, {}> {
           return (
             <div
               key={group + j}
-              className={styles.Action}
+              className={classNames({[styles.Action]: true, [rowStyles[group][j]]: true})}
               onClick={() =>
                 app.pickAction(player, group, j, scoring[group][j])
               }
@@ -159,7 +185,7 @@ class AppComponent extends React.Component<{}, {}> {
               {display(scoring[group][j], "action")}
             </div>
           );
-        return <div key={group + j}>{display(c, "score")}</div>;
+        return <div className={rowStyles[group][j]} key={group + j}>{display(c, "score")}</div>;
       });
 
     const playerGroupSum = (group: (number | null)[]) => {
@@ -210,10 +236,10 @@ class AppComponent extends React.Component<{}, {}> {
           )}
         </div>
         {displayGroup(player, app.turn === i, "sides")}
-        <div>{displaySideSum(player)}</div>
-        <div>{playerSideBonus(player)}</div>
+        <div className={styles.rowsum}>{displaySideSum(player)}</div>
+        <div className={styles.rowbonus}>{playerSideBonus(player)}</div>
         {displayGroup(player, app.turn === i, "combinations")}
-        <div>{playerSum(player)}</div>
+        <div className={styles.rowtotal}>{playerSum(player)}</div>
       </div>
     ));
 
