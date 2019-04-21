@@ -7,14 +7,24 @@ import menu_styles from "./menu.scss";
 import { DirtyInput } from "./components/dirtyinput";
 import { Dice } from "./components/dice";
 import { ManualDice } from "./components/manualdice";
-import { compute_scoring, COMBINATION_NAME } from "./scoring";
+import { compute_scoring } from "./scoring";
 import { Hint } from "./components/hint";
 import { PlayerState, AppState } from "./state";
 import { classNames } from "./util";
+import { i18n } from "./i18n";
 
 class App {
   @observable
   state: AppState = {};
+
+  t(key: string): string {
+    const v = i18n[this.state.lang || "en"][key];
+    if (v === undefined) {
+      console.log("Missing i18n", this.state.lang, key);
+      return key;
+    }
+    return v;
+  }
 
   get players() {
     if (this.state.players === undefined) {
@@ -77,7 +87,7 @@ class App {
   }
 }
 
-const app = new App();
+export const app = new App();
 
 const getStateElement = () =>
   document.getElementById("state") as HTMLInputElement;
@@ -90,33 +100,34 @@ class AppComponent extends React.Component<{}, {}> {
     if (app.players.length === 0) {
       app.setPlayerCount(1);
     }
+    if (!app.state.lang) app.state.lang = "en";
   }
 
   render() {
     const header = (
       <div className={styles.ScoreHeader}>
-        <div className={styles.rowname}>Navn</div>
-        <div className={styles.row1}>{COMBINATION_NAME["1"]}</div>
-        <div className={styles.row2}>{COMBINATION_NAME["2"]}</div>
-        <div className={styles.row3}>{COMBINATION_NAME["3"]}</div>
-        <div className={styles.row4}>{COMBINATION_NAME["4"]}</div>
-        <div className={styles.row5}>{COMBINATION_NAME["5"]}</div>
-        <div className={styles.row6}>{COMBINATION_NAME["6"]}</div>
-        <div className={styles.rowsum}>Sum</div>
-        <div className={styles.rowbonus}>Bonus ved 84 eller flere</div>
-        <div className={styles.rowP}>{COMBINATION_NAME.P}</div>
-        <div className={styles.rowD}>{COMBINATION_NAME.D}</div>
-        <div className={styles.rowT}>{COMBINATION_NAME.T}</div>
-        <div className={styles.rowV}>{COMBINATION_NAME.V}</div>
-        <div className={styles.rowQ}>{COMBINATION_NAME.Q}</div>
-        <div className={styles.rowW}>{COMBINATION_NAME.W}</div>
-        <div className={styles.rows}>{COMBINATION_NAME.s}</div>
-        <div className={styles.rowS}>{COMBINATION_NAME.S}</div>
-        <div className={styles.rowC}>{COMBINATION_NAME.C}</div>
-        <div className={styles.rowH}>{COMBINATION_NAME.H}</div>
-        <div className={styles.rowchance}>{COMBINATION_NAME["?"]}</div>
-        <div className={styles.rowyahtzee}>{COMBINATION_NAME["!"]}</div>
-        <div className={styles.rowtotal}>Sum</div>
+        <div className={styles.rowname}>{app.t("playername")}</div>
+        <div className={styles.row1}>{app.t("comb1")}</div>
+        <div className={styles.row2}>{app.t("comb2")}</div>
+        <div className={styles.row3}>{app.t("comb3")}</div>
+        <div className={styles.row4}>{app.t("comb4")}</div>
+        <div className={styles.row5}>{app.t("comb5")}</div>
+        <div className={styles.row6}>{app.t("comb6")}</div>
+        <div className={styles.rowsum}>{app.t("rowsum")}</div>
+        <div className={styles.rowbonus}>{app.t("rowbonus")}</div>
+        <div className={styles.rowP}>{app.t("combP")}</div>
+        <div className={styles.rowD}>{app.t("combD")}</div>
+        <div className={styles.rowT}>{app.t("combT")}</div>
+        <div className={styles.rowV}>{app.t("combV")}</div>
+        <div className={styles.rowQ}>{app.t("combQ")}</div>
+        <div className={styles.rowW}>{app.t("combW")}</div>
+        <div className={styles.rows}>{app.t("combs")}</div>
+        <div className={styles.rowS}>{app.t("combS")}</div>
+        <div className={styles.rowC}>{app.t("combC")}</div>
+        <div className={styles.rowH}>{app.t("combH")}</div>
+        <div className={styles.rowchance}>{app.t("comb?")}</div>
+        <div className={styles.rowyahtzee}>{app.t("comb!")}</div>
+        <div className={styles.rowtotal}>{app.t("rowtotal")}</div>
       </div>
     );
 
@@ -265,7 +276,7 @@ class AppComponent extends React.Component<{}, {}> {
     const menu = (
       <div className={menu_styles.Menu + " " + styles.Menu}>
         <div className={menu_styles.PlayerCount}>
-          {"Spillere: "}
+          {app.t("playercount")}
           <DirtyInput
             className={menu_styles.PlayerCountInput}
             type="number"
@@ -282,7 +293,7 @@ class AppComponent extends React.Component<{}, {}> {
               checked={!!app.state.editing}
               onChange={e => (app.state.editing = !!e.target.checked)}
             />
-            {" Rediger"}
+            {app.t("editing")}
           </label>
         </div>
         <div className={menu_styles.ManualDice}>
@@ -292,7 +303,7 @@ class AppComponent extends React.Component<{}, {}> {
               checked={!app.state.manualDice}
               onChange={e => (app.state.manualDice = !e.target.checked)}
             />
-            {" Digitale terninger"}
+            {app.t("non_manual_dice")}
           </label>
         </div>
         <div className={menu_styles.Hints}>
@@ -302,7 +313,25 @@ class AppComponent extends React.Component<{}, {}> {
               checked={!!app.state.hints}
               onChange={e => (app.state.hints = !!e.target.checked)}
             />
-            {" Hints"}
+            {app.t("hints")}
+          </label>
+        </div>
+        <div className={menu_styles.Language}>
+          <label>
+            <input
+              type="radio"
+              checked={app.state.lang === "da"}
+              onChange={() => app.state.lang = "da"}
+            />
+            {app.t("lang_da")}
+          </label>
+          <label>
+            <input
+              type="radio"
+              checked={app.state.lang === "en"}
+              onChange={() => app.state.lang = "en"}
+            />
+            {app.t("lang_en")}
           </label>
         </div>
       </div>

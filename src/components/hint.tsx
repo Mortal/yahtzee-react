@@ -1,6 +1,7 @@
 import * as React from "react";
 import { PlayerState } from "../state";
-import { COMBINATIONS, COMBINATION_NAME } from "../scoring";
+import { COMBINATIONS } from "../scoring";
+import { app } from "../index";
 
 interface Props {
   currentRoll: (number | null)[];
@@ -97,17 +98,17 @@ export class Hint extends React.Component<Props, State> {
           else if (Array.isArray(data.keep_first))
             this.setState({
               error: null,
-              hint: "Jeg ville beholde " + data.keep_first.join(", ")
+              hint: app.t("keep") + data.keep_first.join(", ")
             });
           else if (Array.isArray(data.keep_second))
             this.setState({
               error: null,
-              hint: "Jeg ville beholde " + data.keep_second.join(", ")
+              hint: app.t("keep") + data.keep_second.join(", ")
             });
           else if (typeof data.best_action === "string")
             this.setState({
               error: null,
-              hint: "Jeg ville vælge " + COMBINATION_NAME[data.best_action]
+              hint: app.t("pick") + app.t("comb" + data.best_action)
             });
           else
             this.setState({

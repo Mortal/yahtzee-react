@@ -1,6 +1,7 @@
 import * as React from "react";
 import styles from "./dice.scss";
 import { classNames } from "../util";
+import { app } from "../index";
 
 const DICE = "⚀⚁⚂⚃⚄⚅";
 
@@ -113,7 +114,7 @@ export class Dice extends React.Component<Props, State> {
         disabled={!this.props.allowReroll}
         onClick={() => this.reroll()}
       >
-        {this.props.value.some(v => v !== null) ? "Slå igen" : "Slå"}
+        {this.props.value.some(v => v !== null) ? app.t("reroll") : app.t("roll")}
       </button>
     );
     return (

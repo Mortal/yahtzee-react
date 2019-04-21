@@ -13,4 +13,5 @@ export interface AppState {
   manualDice?: boolean;
   turn?: number;
   hints?: boolean;
+  lang?: "da" | "en";
 }
