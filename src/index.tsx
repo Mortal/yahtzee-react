@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { observable, action, autorun } from "mobx";
 import { observer } from "mobx-react";
 import styles from "./index.scss";
+import menu_styles from "./menu.scss";
 import { DirtyInput } from "./components/dirtyinput";
 import { Dice } from "./components/dice";
 import { ManualDice } from "./components/manualdice";
@@ -218,7 +219,7 @@ class AppComponent extends React.Component<{}, {}> {
 
     const players = app.players.map((player, i) => (
       <div key={i} className={styles.ScoreColumn}>
-        <div>
+        <div className={styles.rowname}>
           {app.state.editing ? (
             <input
               value={player.name || ""}
@@ -230,8 +231,8 @@ class AppComponent extends React.Component<{}, {}> {
                 type="radio"
                 checked={app.turn === i}
                 onChange={() => (app.state.turn = i)}
-              />{" "}
-              {player.name}
+              />
+              <span>{player.name}</span>
             </label>
           )}
         </div>
@@ -257,11 +258,11 @@ class AppComponent extends React.Component<{}, {}> {
     );
 
     const menu = (
-      <div className={styles.Menu}>
-        <div>
+      <div className={menu_styles.Menu + " " + styles.Menu}>
+        <div className={menu_styles.PlayerCount}>
           {"Spillere: "}
           <DirtyInput
-            className={styles.PlayerCount}
+            className={menu_styles.PlayerCountInput}
             type="number"
             value={app.players.length}
             onChange={(v: number | null) => {
@@ -269,7 +270,7 @@ class AppComponent extends React.Component<{}, {}> {
             }}
           />
         </div>
-        <div>
+        <div className={menu_styles.Editing}>
           <label>
             <input
               type="checkbox"
@@ -279,7 +280,7 @@ class AppComponent extends React.Component<{}, {}> {
             {" Rediger"}
           </label>
         </div>
-        <div>
+        <div className={menu_styles.ManualDice}>
           <label>
             <input
               type="checkbox"
@@ -289,7 +290,7 @@ class AppComponent extends React.Component<{}, {}> {
             {" Digitale terninger"}
           </label>
         </div>
-        <div>
+        <div className={menu_styles.Hints}>
           <label>
             <input
               type="checkbox"
@@ -312,17 +313,17 @@ class AppComponent extends React.Component<{}, {}> {
     ) : null;
 
     return (
-      <>
+      <div className={styles.App}>
         {menu}
-        <div>
+        <div className={styles.Dice}>
           {dice}
-          {hints}
         </div>
+        {hints}
         <div className={styles.ScoreTable}>
           {header}
           {players}
         </div>
-      </>
+      </div>
     );
   }
 }

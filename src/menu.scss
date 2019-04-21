@@ -1,0 +1,15 @@
+.Menu {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 0.5em;
+
+  & > div {
+    background-color: rgba(100%, 100%, 100%, 0.2);
+    margin: 0 1em 0 0;
+    padding: 0 0.5em;
+  }
+
+  .PlayerCountInput {
+    width: 3em;
+  }
+}

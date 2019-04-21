@@ -2,78 +2,115 @@ body {
   font-family: "Liberation Sans", Arial, sans-serif;
 }
 
-.ScoreTable {
-  font-size: 12px;
-  display: flex;
-  flex-flow: row;
-  & > .ScoreHeader,
-  & > .ScoreColumn {
+.App {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 2em 1fr 2em;
+
+  max-width: 80em;
+  margin: auto;
+  padding: 3em;
+  background-color: green;
+  color: white;
+  border-radius: 3em;
+
+  grid-template-areas:
+    "menu score"
+    "dice score"
+    "hint score";
+
+  & > .ScoreTable {
+    grid-area: score;
+
+    font-size: 12px;
     display: flex;
-    flex-flow: column;
-    & > div {
-      height: 2.6em;
-      line-height: 2.6em;
-      border: 1px solid black;
-      margin: -1px -1px 0 0;
-      padding: 0 .5em;
-      &:first-child {
-        border-top-width: 3px;
+    flex-flow: row;
+    background-color: white;
+    color: black;
+    & > .ScoreHeader,
+    & > .ScoreColumn {
+      display: flex;
+      flex-flow: column;
+      & > div {
+        height: 2.6em;
+        line-height: 2.6em;
+        border: 1px solid black;
+        margin: -1px -1px 0 0;
+        padding: 0 .5em;
+        &:first-child {
+          border-top-width: 3px;
+        }
+        &:last-child {
+          border-bottom-width: 3px;
+        }
       }
-      &:last-child {
+      & > .row6, & > .rowbonus, & > .rowtotal {
         border-bottom-width: 3px;
       }
+      &:first-child > div {
+        border-left-width: 3px;
+      }
+      &:last-child > div {
+        border-right-width: 3px;
+      }
     }
-    & > .row6, & > .rowbonus, & > .rowtotal {
-      border-bottom-width: 3px;
+    & > .ScoreHeader {
+      width: 15em;
     }
-    &:first-child > div {
-      border-left-width: 3px;
-    }
-    &:last-child > div {
-      border-right-width: 3px;
-    }
-  }
-  & > .ScoreHeader {
-    width: 15em;
-  }
-  & > .ScoreColumn {
-    width: 3em;
-    & > div {
-      text-align: center;
-      & > input {
-        width: 100%;
-        border: 0 none;
-        border-bottom: 1px solid #999;
-        padding: 0;
+    & > .ScoreColumn {
+      width: 3em;
+      & > div {
         text-align: center;
-        font-family: inherit;
-        font-size: inherit;
-        background: transparent;
+        & > input {
+          width: 100%;
+          border: 0 none;
+          border-bottom: 1px solid #999;
+          padding: 0;
+          text-align: center;
+          font-family: inherit;
+          font-size: inherit;
+          background: transparent;
+        }
+        &.Action {
+          color: #0c0;
+          font-style: italic;
+        }
       }
-      &.Action {
-        color: #0c0;
-        font-style: italic;
+
+      & > .rowname {
+        padding: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        & > label {
+          height: 100%;
+          width: 100%;
+          text-align: center;
+          display: block;
+
+          & > input[type=radio] {
+            display: none;
+          }
+          & > input:checked + span {
+            font-weight: bold;
+            color: green;
+          }
+        }
       }
     }
   }
-}
 
-.Menu {
-  display: flex;
-  flex-flow: row wrap;
-  margin-bottom: 0.5em;
-
-  & > div {
-    background-color: #eee;
-    margin: 0 1em 0 0;
-    padding: 0 0.5em;
+  & > .Hint {
+    height: 2em;
+    grid-area: hint;
   }
 
-  .PlayerCount {
-    width: 3em;
+  & > .Dice {
+    grid-area: dice;
+    justify-self: center;
+    align-self: center;
   }
-}
 
-.Hint {
-  height: 2em;
+  & > .Menu {
+    grid-area: menu;
+  }
 }
