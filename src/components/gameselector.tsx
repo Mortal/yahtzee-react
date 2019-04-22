@@ -195,7 +195,6 @@ class StateSync {
     });
 
     onPatch(app.state, patch => {
-      console.log("Patch", this.syncing, this.local, patch);
       if (this.syncing) return;
       if (this.local) return;
       this.pendingPatches.push(patch);
@@ -300,7 +299,6 @@ class StateSync {
         return;
       }
       this.games.push(data.game);
-      console.log("Set gameId to", data.game.id);
       app.uiState.gameId = data.game.id;
     };
     httpRequest.open("POST", url);
