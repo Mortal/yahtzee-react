@@ -12,15 +12,15 @@
   & > .Die {
     width: 1.11em;
     height: 1.11em;
-    border: 0px none;
-    background: transparent;
-    color: inherit;
-    font-size: inherit;
+    display: inline-block;
     line-height: 100%;
     text-align: center;
-    padding: 0;
 
-    &.Held {
+    & > input[type=checkbox] {
+      display: none;
+    }
+
+    & > input:checked + span {
       color: #cf0;
     }
   }

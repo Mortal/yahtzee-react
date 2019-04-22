@@ -1,6 +1,5 @@
 import * as React from "react";
 import styles from "./dice.scss";
-import { classNames } from "../util";
 import { app } from "../app";
 
 const DICE = "⚀⚁⚂⚃⚄⚅";
@@ -97,17 +96,17 @@ export class Dice extends React.Component<Props, State> {
     const held = this.getHeldMask();
     const dice = (this.state.rerollAnimation || this.props.value).map(
       (v, i) => (
-        <button
+        <label
           key={i}
-          className={classNames({
-            [styles.Die]: true,
-            [styles.Held]: held[i]
-          })}
-          onClick={() => this.toggleHold(i)}
-          disabled={v === null}
+          className={styles.Die}
         >
+          <input type="checkbox" checked={held[i]}
+          disabled={v === null}
+          onChange={e => {console.log("held?", i, held[i]); if (held[i] !== e.target.checked) this.toggleHold(i);}} />
+        <span>
           {v === null ? "?" : DICE.charAt(v - 1)}
-        </button>
+        </span>
+        </label>
       )
     );
     const reroll = (
