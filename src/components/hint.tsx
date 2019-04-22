@@ -1,4 +1,5 @@
 import * as React from "react";
+import { observer } from "mobx-react";
 import { PlayerState } from "../state";
 import { COMBINATIONS } from "../scoring";
 import { app } from "../app";
@@ -13,9 +14,10 @@ interface Props {
 interface State {
   requestingUrl: string | null;
   error: string | null;
-  hint: string | null;
+  hint: {keyI18n: string, value?: string, valueI18n?: string} | null;
 }
 
+@observer
 export class Hint extends React.Component<Props, State> {
   request: XMLHttpRequest | null = null;
 
@@ -98,17 +100,17 @@ export class Hint extends React.Component<Props, State> {
           else if (Array.isArray(data.keep_first))
             this.setState({
               error: null,
-              hint: app.t("keep") + data.keep_first.join(", ")
+              hint: {keyI18n: "keep", value: data.keep_first.join(", ")},
             });
           else if (Array.isArray(data.keep_second))
             this.setState({
               error: null,
-              hint: app.t("keep") + data.keep_second.join(", ")
+              hint: {keyI18n: "keep", value: data.keep_second.join(", ")},
             });
           else if (typeof data.best_action === "string")
             this.setState({
               error: null,
-              hint: app.t("pick") + app.t("comb" + data.best_action)
+              hint: {keyI18n: "pick", valueI18n: "comb" + data.best_action},
             });
           else
             this.setState({
@@ -125,11 +127,17 @@ export class Hint extends React.Component<Props, State> {
   }
 
   render() {
+    let hint: string | null = null;
+    const hintData = this.state.hint;
+    if (hintData) {
+      const {keyI18n, value, valueI18n} = hintData;
+      hint = app.t(keyI18n) + (value || "") + (valueI18n ? app.t(valueI18n) : "");
+    }
     return (
       <div className={this.props.className}>
         {this.getUrl() ? (
           <>
-            {this.state.hint}
+            {hint}
             {this.state.error}
           </>
         ) : null}
