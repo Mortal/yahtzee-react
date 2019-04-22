@@ -41,6 +41,9 @@ export const AppState = types
       self.turn = (self.turn + 1) % (self.playerCount || 1);
       self.currentRollCount = 0;
     },
+    setTurn(i: number) {
+      if (i < self.playerCount) self.turn = i;
+    },
     setName(player: number, name: string) {
       if (player >= self.players.length) return;
       self.players[player].name = name;

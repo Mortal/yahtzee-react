@@ -178,7 +178,7 @@ class AppComponent extends React.Component<{}, {}> {
               <input
                 type="radio"
                 checked={app.state.turn === i}
-                onChange={() => (app.state.turn = i)}
+                onChange={() => app.state.setTurn(i)}
               />
               <span>
                 {player.name || (i < 26 ? String.fromCharCode(65 + i) : "")}
