@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from "./dice.scss";
 import { classNames } from "../util";
-import { app } from "../index";
+import { app } from "../app";
 
 const DICE = "⚀⚁⚂⚃⚄⚅";
 
@@ -85,36 +85,40 @@ export class Dice extends React.Component<Props, State> {
       else faces.push(roll.shift() as number);
     }
     if (this.rerollAnimation > 0) {
-      this.setState({rerollAnimation: faces});
+      this.setState({ rerollAnimation: faces });
       setTimeout(() => this.rerollStep(), 100);
     } else {
-      this.setState({rerollAnimation: null});
+      this.setState({ rerollAnimation: null });
       this.props.onChange(faces);
     }
   }
 
   render() {
     const held = this.getHeldMask();
-    const dice = (this.state.rerollAnimation || this.props.value).map((v, i) => (
-      <button
-        key={i}
-        className={classNames({
-          [styles.Die]: true,
-          [styles.Held]: held[i]
-        })}
-        onClick={() => this.toggleHold(i)}
-        disabled={v === null}
-      >
-        {v === null ? "?" : DICE.charAt(v - 1)}
-      </button>
-    ));
+    const dice = (this.state.rerollAnimation || this.props.value).map(
+      (v, i) => (
+        <button
+          key={i}
+          className={classNames({
+            [styles.Die]: true,
+            [styles.Held]: held[i]
+          })}
+          onClick={() => this.toggleHold(i)}
+          disabled={v === null}
+        >
+          {v === null ? "?" : DICE.charAt(v - 1)}
+        </button>
+      )
+    );
     const reroll = (
       <button
         className={styles.Roll}
         disabled={!this.props.allowReroll}
         onClick={() => this.reroll()}
       >
-        {this.props.value.some(v => v !== null) ? app.t("reroll") : app.t("roll")}
+        {this.props.value.some(v => v !== null)
+          ? app.t("reroll")
+          : app.t("roll")}
       </button>
     );
     return (

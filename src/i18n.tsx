@@ -1,4 +1,4 @@
-export const i18n: {[lang: string]: {[key: string]: string}} = {
+export const i18n: { [lang: string]: { [key: string]: string } } = {
   da: {
     playername: "Navn",
     rowsum: "Sum",
@@ -32,6 +32,8 @@ export const i18n: {[lang: string]: {[key: string]: string}} = {
     pick: "Jeg ville vælge ",
     reroll: "Slå igen",
     roll: "Slå",
+    localgame: "Offline spil",
+    newgame: "Nyt online spil",
   },
   en: {
     playername: "Name",
@@ -66,5 +68,7 @@ export const i18n: {[lang: string]: {[key: string]: string}} = {
     pick: "I would pick ",
     reroll: "Reroll",
     roll: "Roll",
-  },
+    localgame: "Offline game",
+    newgame: "New online game",
+  }
 };

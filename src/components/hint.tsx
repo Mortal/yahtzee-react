@@ -1,12 +1,12 @@
 import * as React from "react";
 import { PlayerState } from "../state";
 import { COMBINATIONS } from "../scoring";
-import { app } from "../index";
+import { app } from "../app";
 
 interface Props {
   currentRoll: (number | null)[];
   currentRollCount: number;
-  player: PlayerState;
+  player: typeof PlayerState.Type;
   className?: string;
 }
 
