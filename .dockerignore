@@ -1,0 +1,9 @@
+deploy.sh
+dist
+Dockerfile
+.dockerignore
+.git
+.gitignore
+node_modules
+.travis.yml
+yahtzee-react.tar.gz
