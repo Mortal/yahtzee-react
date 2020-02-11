@@ -49,6 +49,7 @@ function score_yahtzee(combinations: number[], histogram: number[]) {
 }
 
 function score_combinations(combinations: number[], histogram: number[]) {
+  // TODO(rav): Replace this complicated logic with something simpler and less error-prone.
   let s2 = 0,
     s3 = 0,
     s4 = 0,
@@ -67,9 +68,11 @@ function score_combinations(combinations: number[], histogram: number[]) {
     }
   }
   combinations[S4] = 4 * s4;
-  combinations[S3] = 3 * s3;
+  combinations[S3] = 3 * Math.max(s4, Math.max(s33, s3));
   combinations[S33] = s33 > 0 ? 3 * (s33 + s3) : 0;
-  combinations[S23] = s2 > 0 && s3 > 0 ? s2 * 2 + s3 * 3 : 0;
+  const h3 = s33 || s3;
+  const h2 = s33 ? s3 : s2;
+  combinations[S23] = h3 && h2 ? h2 * 2 + h3 * 3 : 0;
 }
 
 function score_singles(combinations: number[], histogram: number[]) {
@@ -109,3 +112,6 @@ export function compute_scoring(roll: number[]): Scoring | null {
 
   return { sides, combinations };
 }
+
+if (compute_scoring([1,1,1,6,6,6])!.combinations[S3] !== 18) throw new Error("1");
+if (compute_scoring([1,1,1,6,6,6])!.combinations[S23] !== 20) throw new Error("2");
